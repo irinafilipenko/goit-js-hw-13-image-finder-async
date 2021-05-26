@@ -4,6 +4,7 @@ import NewsApiService from './apiService';
 import galleryTempl from '../templates/gallery.hbs';
 
 import { onContainerClick } from './openModal';
+import { spinner } from './spinner';
 
 const body = document.querySelector('body');
 body.insertAdjacentHTML('afterbegin', renderFormTempl());
@@ -49,7 +50,8 @@ function onLoadMore() {
 }
 
 function onMakeGallery(hits) {
-  refs.createGalery.insertAdjacentHTML('beforeend', galleryTempl(hits));
+  const template = galleryTempl(hits);
+  refs.createGalery.insertAdjacentHTML('beforeend', template);
 }
 
 function clearGalleryContainer() {

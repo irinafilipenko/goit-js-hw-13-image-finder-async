@@ -29,6 +29,7 @@
   "dependencies": {
     "basiclightbox": "^5.0.4",
     "basicslider": "^1.1.5",
-    "lodash.debounce": "^4.0.8"
+    "lodash.debounce": "^4.0.8",
+    "spin.js": "^4.1.0"
   }
 }

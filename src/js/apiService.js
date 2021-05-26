@@ -7,19 +7,24 @@ export default class NewsApiService {
     this.page = 1;
   }
 
-  fetchArticles() {
+  async fetchArticles() {
     console.log(this);
     const url = `${BASE_URL}/?key=${API_KEY}&q=${this.searchQuery}&image_type=photo&per_page=12&page=${this.page}`;
 
-    return fetch(url)
-      .then(response => response.json())
-      .then(({ hits }) => {
-        if (hits.length === 0) {
-          onFetchError();
-        }
-        this.incrementPage();
-        return hits;
-      });
+    const responseUrl = await fetch(url);
+    const { hits } = await responseUrl.json();
+    this.incrementPage();
+    return hits;
+
+    // return fetch(url)
+    //   .then(response => response.json())
+    //   .then(({ hits }) => {
+    //     if (hits.length === 0) {
+    //       onFetchError();
+    //     }
+    //     this.incrementPage();
+    //     return hits;
+    //   });
   }
 
   incrementPage() {
