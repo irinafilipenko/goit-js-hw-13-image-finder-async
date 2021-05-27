@@ -8,8 +8,15 @@ export default class NewsApiService {
   }
 
   async fetchArticles() {
-    console.log(this);
-    const url = `${BASE_URL}/?key=${API_KEY}&q=${this.searchQuery}&image_type=photo&per_page=12&page=${this.page}`;
+    const searchParams = new URLSearchParams({
+      q: this.searchQuery,
+      image_type: 'photo',
+      per_page: 15,
+      page: this.page,
+    });
+
+    const url = `${BASE_URL}/?key=${API_KEY}&${searchParams}`;
+    // const url = `${BASE_URL}/?key=${API_KEY}&q=${this.searchQuery}&image_type=photo&per_page=15&page=${this.page}`;
 
     const responseUrl = await fetch(url);
     const { hits } = await responseUrl.json();

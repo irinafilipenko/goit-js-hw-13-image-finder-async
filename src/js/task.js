@@ -14,13 +14,13 @@ const refs = {
 
   createGalery: document.querySelector('.gallery'),
 
-  loadMoreBtn: document.querySelector('[data-action="load-more"]'),
+  sentinel: document.querySelector('.sentinel'),
 };
 
 const newApiService = new NewsApiService();
 
 refs.searchForm.addEventListener('submit', onSearch);
-refs.loadMoreBtn.addEventListener('click', onLoadMore);
+
 refs.createGalery.addEventListener('click', onContainerClick);
 
 function onSearch(e) {
@@ -33,20 +33,6 @@ function onSearch(e) {
   }
   newApiService.resetPage();
   newApiService.fetchArticles().then(onMakeGallery).catch(onFetchError);
-
-  setTimeout(() => refs.loadMoreBtn.classList.remove('is-hidden'), 1000);
-}
-
-function onLoadMore() {
-  newApiService.fetchArticles().then(onMakeGallery);
-
-  const totalScrollHeight = refs.createGalery.clientHeight + 80;
-  setTimeout(() => {
-    window.scrollTo({
-      top: totalScrollHeight,
-      behavior: 'smooth',
-    });
-  }, 500);
 }
 
 function onMakeGallery(hits) {
@@ -57,3 +43,21 @@ function onMakeGallery(hits) {
 function clearGalleryContainer() {
   refs.createGalery.innerHTML = ' ';
 }
+
+const onEntry = entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting && newApiService.query !== '') {
+      console.log('img');
+
+      newApiService.fetchArticles().then(onMakeGallery).catch(onFetchError);
+    }
+  });
+};
+
+const options = {
+  rootMargin: '300px',
+};
+
+let observer = new IntersectionObserver(onEntry, options);
+
+observer.observe(refs.sentinel);
