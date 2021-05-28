@@ -5,24 +5,29 @@ import { Spinner } from 'spin.js';
 import { opts } from './spinner';
 
 function onContainerClick(event) {
-  event.preventDefault();
-  // const spinner = new Spinner().spin();
-  const target = document.querySelector('.basicLightbox');
-  console.log(target);
-  const spinner = new Spinner(opts).spin(target);
-
-  event.target.appendChild(spinner.el);
-  console.log(spinner);
+  // event.preventDefault();
 
   if (event.target.nodeName !== 'IMG') {
     return;
   }
 
   const changeImg = `<img src=${event.target.dataset.source} alt="${event.target.alt}" />`;
-
   const instance = basicLightbox.create(changeImg);
-
+  console.log(instance.element());
   instance.show();
+  const lightboxEl = instance.element().firstElementChild;
+  const modalSpinner = new Spinner(opts).spin(lightboxEl);
+  console.dir(modalSpinner);
+
+  console.dir(event.target.onload);
+  // if (event.target.onload) {
+  //   modalSpinner.spin();
+  // }
+  if (!event.target.onload) {
+    modalSpinner.stop();
+  }
+
+  // event.target.onload = () => modalSpinner.stop();
 }
 
 export { onContainerClick };

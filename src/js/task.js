@@ -46,7 +46,9 @@ function clearGalleryContainer() {
 
 const onEntry = entries => {
   entries.forEach(entry => {
-    if (entry.isIntersecting && newApiService.query !== '') {
+    const hasQuery = newApiService.query !== '';
+    const isNextRequest = newApiService.page > 1;
+    if (entry.isIntersecting && hasQuery && isNextRequest) {
       console.log('img');
 
       newApiService.fetchArticles().then(onMakeGallery).catch(onFetchError);
