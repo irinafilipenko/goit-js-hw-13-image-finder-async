@@ -23,9 +23,6 @@ function onContainerClick(event) {
   // if (event.target.onload) {
   //   modalSpinner.spin();
   // }
-  if (!event.target.onload) {
-    modalSpinner.stop();
-  }
 
   // event.target.onload = () => modalSpinner.stop();
 }
