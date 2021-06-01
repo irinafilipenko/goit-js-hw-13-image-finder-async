@@ -4,7 +4,6 @@ import NewsApiService from './apiService';
 import galleryTempl from '../templates/gallery.hbs';
 
 import { onContainerClick } from './openModal';
-import { spinner } from './spinner';
 
 const body = document.querySelector('body');
 body.insertAdjacentHTML('afterbegin', renderFormTempl());
@@ -49,8 +48,6 @@ const onEntry = entries => {
     const hasQuery = newApiService.query !== '';
     const isNextRequest = newApiService.page > 1;
     if (entry.isIntersecting && hasQuery && isNextRequest) {
-      console.log('img');
-
       newApiService.fetchArticles().then(onMakeGallery).catch(onFetchError);
     }
   });
@@ -63,3 +60,25 @@ const options = {
 let observer = new IntersectionObserver(onEntry, options);
 
 observer.observe(refs.sentinel);
+
+const heightDocumentElement = document.documentElement.clientHeight;
+
+const arrowTop = document.createElement(`div`);
+arrowTop.className = 'arrow-top';
+arrowTop.dataset.hidden = true;
+body.appendChild(arrowTop);
+
+arrowTop.addEventListener('click', onArrowTopClick);
+
+window.addEventListener('scroll', showHideArrowTop);
+
+function onArrowTopClick() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+}
+
+function showHideArrowTop() {
+  arrowTop.dataset.hidden = pageYOffset < document.documentElement.clientHeight;
+}
